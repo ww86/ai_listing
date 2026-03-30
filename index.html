@@ -1,0 +1,2137 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AI Service Matrix 2026</title>
+        <style>
+            :root {
+                --bg: #ffffff;
+                --surface: #f8fafc;
+                --border: #e2e8f0;
+                --text: #0f172a;
+                --text-muted: #64748b;
+                --primary: #2563eb;
+                --primary-light: #eff6ff;
+                --row-hover: #f1f5f9;
+                --success: #10b981;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family:
+                    "Inter",
+                    -apple-system,
+                    sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.5;
+                font-size: 13px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* Navigation */
+            header {
+                border-bottom: 1px solid var(--border);
+                padding: 12px 10px;
+                position: sticky;
+                top: 0;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(12px);
+                z-index: 100;
+            }
+            .nav-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            button.tab-btn {
+                background: white;
+                border: 1px solid var(--border);
+                padding: 7px 14px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                color: var(--text-muted);
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            button.tab-btn:hover {
+                border-color: var(--text-muted);
+                color: var(--text);
+            }
+            button.tab-btn.active {
+                background: var(--text);
+                color: white;
+                border-color: var(--text);
+                box-shadow:
+                    0 4px 6px -1px rgba(0, 0, 0, 0.15),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.1);
+                transform: translateY(-1px);
+            }
+
+            /* Tier Badge Styles */
+            .tier-badge {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+            }
+            .tier-1 {
+                background: #fbbf24;
+                color: #78350f;
+            }
+            .tier-2 {
+                background: #94a3b8;
+                color: #1e293b;
+            }
+            .tier-3 {
+                background: #cbd5e1;
+                color: #334155;
+            }
+            .tier-4 {
+                background: #e2e8f0;
+                color: #475569;
+            }
+
+            /* Visually hidden (for accessibility/SEO) */
+            .visually-hidden {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            /* Main Content */
+            main {
+                max-width: 1400px;
+                margin: 24px auto;
+                padding: 0 20px;
+            }
+            .controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+                border-bottom: 2px solid var(--surface);
+                padding-bottom: 8px;
+            }
+            .category-info h2 {
+                font-size: 18px;
+                font-weight: 800;
+                letter-spacing: -0.02em;
+            }
+
+            /* Table Design */
+            .table-wrapper {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                background: white;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+                min-width: 1100px;
+            }
+
+            th {
+                background: var(--surface);
+                padding: 14px 12px;
+                text-align: left;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--text-muted);
+                border-bottom: 1px solid var(--border);
+                cursor: pointer;
+            }
+            th:hover {
+                background: #edf2f7;
+                color: var(--text);
+            }
+
+            /* Column sizing */
+            .col-tier {
+                width: 6%;
+                text-align: center;
+            }
+            .col-logo {
+                width: 4%;
+                text-align: center;
+            }
+            .col-name {
+                width: 12%;
+            }
+            .col-output {
+                width: 9%;
+            }
+            .col-check {
+                width: 4%;
+                text-align: center;
+            }
+            .col-nsfw {
+                width: 4%;
+                text-align: center;
+            }
+            .col-url {
+                width: 13%;
+            }
+            .col-desc {
+                width: 22%;
+            }
+
+            td {
+                padding: 6px 8px;
+                border-bottom: 1px solid var(--border);
+                vertical-align: middle;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 12px;
+            }
+            .description-cell {
+                white-space: normal;
+                font-size: 11px;
+                line-height: 1.35;
+                color: var(--text-muted);
+            }
+            .service-name {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .service-logo {
+                width: 20px;
+                height: 20px;
+                border-radius: 4px;
+                object-fit: contain;
+                background: #f1f5f9;
+            }
+            .output-tag {
+                background: #f1f5f9;
+                color: #475569;
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+                border: 1px solid #e2e8f0;
+            }
+
+            .dot {
+                height: 10px;
+                width: 10px;
+                border-radius: 50%;
+                display: inline-block;
+            }
+            .dot.yes {
+                background-color: var(--success);
+            }
+            .dot.no {
+                background-color: #cbd5e1;
+                opacity: 0.5;
+            }
+
+            .url-cell {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .url-link {
+                color: var(--primary);
+                text-decoration: none;
+                font-family: ui-monospace, monospace;
+                font-size: 12px;
+            }
+            .copy-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 2px;
+                color: var(--text-muted);
+            }
+            .copy-btn:hover {
+                color: var(--primary);
+            }
+
+            .description-cell {
+                white-space: normal;
+                color: var(--text);
+                font-size: 12.5px;
+            }
+
+            th.sort-asc::after {
+                content: " ↑";
+                color: var(--primary);
+            }
+            th.sort-desc::after {
+                content: " ↓";
+                color: var(--primary);
+            }
+
+            .legend {
+                display: flex;
+                gap: 15px;
+                margin-top: 12px;
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            /* Footer */
+            .site-footer {
+                margin-top: 24px;
+                padding-top: 16px;
+                border-top: 1px solid var(--border);
+                text-align: center;
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+            .site-footer p {
+                margin: 4px 0;
+            }
+            .site-footer .disclaimer {
+                font-size: 10px;
+                max-width: 700px;
+                margin: 8px auto 0;
+                line-height: 1.4;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="nav-container">
+                <button
+                    class="tab-btn active"
+                    onclick="setTab('web-chat', this)"
+                >
+                    Web Chat
+                </button>
+                <button class="tab-btn" onclick="setTab('text-to-image', this)">
+                    Text to Image
+                </button>
+                <button
+                    class="tab-btn"
+                    onclick="setTab('image-to-video', this)"
+                >
+                    Image to Video
+                </button>
+                <button class="tab-btn" onclick="setTab('text-to-video', this)">
+                    Text to Video
+                </button>
+                <button
+                    class="tab-btn"
+                    onclick="setTab('text-to-speech', this)"
+                >
+                    Text to Speech
+                </button>
+                <button class="tab-btn" onclick="setTab('text-to-music', this)">
+                    Text to Music
+                </button>
+                <button class="tab-btn" onclick="setTab('image-to-text', this)">
+                    Image to Text
+                </button>
+                <button
+                    class="tab-btn"
+                    onclick="setTab('script-to-narration', this)"
+                >
+                    Script to Narration
+                </button>
+                <button
+                    class="tab-btn"
+                    onclick="setTab('image-to-prompt', this)"
+                >
+                    Image to Prompt
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="controls">
+                <h2 id="category-title" class="visually-hidden">Web Chat</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="service-table">
+                    <thead>
+                        <tr>
+                            <th class="col-tier" onclick="sortTable(1)">
+                                Tier
+                            </th>
+                            <th class="col-logo">Logo</th>
+                            <th class="col-name" onclick="sortTable(2)">
+                                Service
+                            </th>
+                            <th class="col-output" onclick="sortTable(3)">
+                                Output Type
+                            </th>
+                            <th class="col-check" onclick="sortTable(4)">
+                                Free
+                            </th>
+                            <th class="col-check" onclick="sortTable(5)">
+                                Credits
+                            </th>
+                            <th class="col-check" onclick="sortTable(6)">
+                                Sub
+                            </th>
+                            <th class="col-check" onclick="sortTable(7)">
+                                API
+                            </th>
+                            <th class="col-check" onclick="sortTable(8)">
+                                Local
+                            </th>
+                            <th class="col-nsfw" onclick="sortTable(9)">
+                                NSFW
+                            </th>
+                            <th class="col-url" onclick="sortTable(10)">
+                                Domain
+                            </th>
+                            <th class="col-desc" onclick="sortTable(11)">
+                                Key Constraint / Benefit
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="dot yes"></span> Supported
+                </div>
+                <div class="legend-item">
+                    <span class="dot no"></span> Not Supported
+                </div>
+            </div>
+
+            <footer class="site-footer">
+                <p>Website written by <strong>Qwen Code</strong></p>
+                <p class="disclaimer">
+                    <strong>Disclaimer:</strong> While care has been taken to
+                    ensure accuracy, the information in these tables may contain
+                    errors or become outdated. Service features, pricing, and
+                    availability change frequently. Please verify details with
+                    the respective service providers before making decisions.
+                </p>
+            </footer>
+        </main>
+
+        <script>
+            // Column legend: free=unlimited free | credits=free daily/weekly/monthly | sub=paid subscription | api=API access | local=run on home PC/Colab | nsfw=allows adult content | tier=1(best)-4
+            const data = {
+                "text-to-image": [
+                    {
+                        name: "Midjourney v7",
+                        url: "midjourney.com",
+                        output: "Web/Discord",
+                        desc: "Requires Discord for main interaction; closed model ecosystem.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "ChatGPT (DALL-E 3)",
+                        url: "chat.openai.com",
+                        output: "Web Chat",
+                        desc: "DALL-E 3 integrated into ChatGPT; conversational image generation with refinements.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Gemini (Imagen)",
+                        url: "gemini.google.com",
+                        output: "Web Chat",
+                        desc: "Imagen 3 integrated into Gemini; generate images via natural conversation.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Microsoft Copilot (Designer)",
+                        url: "copilot.microsoft.com",
+                        output: "Web Chat",
+                        desc: "DALL-E 3 powered image generation; free boosts daily; integrated in chat.",
+                        free: 1,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Stable Diffusion XL",
+                        url: "stability.ai",
+                        output: "Weights (Safetensors)",
+                        desc: "Full local control; compatible with Automatic1111/ComfyUI.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "DALL-E 3",
+                        url: "openai.com",
+                        output: "Web/API",
+                        desc: "High prompt adherence via LLM integration; strong safety filters.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Flux.1 [dev]",
+                        url: "blackforestlabs.ai",
+                        output: "Weights",
+                        desc: "High VRAM requirement for local; current state-of-the-art for anatomy.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Ideogram 2.0",
+                        url: "ideogram.ai",
+                        output: "Web/API",
+                        desc: "Optimized for graphic design and reliable text rendering.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Adobe Firefly",
+                        url: "firefly.adobe.com",
+                        output: "Web/Plugin",
+                        desc: "Trained on licensed assets only; native Photoshop integration.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Leonardo.ai",
+                        url: "leonardo.ai",
+                        output: "Web UI",
+                        desc: "Web-based model management and fine-tuning storage.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Recraft.ai",
+                        url: "recraft.ai",
+                        output: "SVG / Raster",
+                        desc: "Provides infinite-scale vector output for logo/brand design.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "DALL-E 2",
+                        url: "openai.com",
+                        output: "Web/API",
+                        desc: "Earlier OpenAI model; simpler and faster for basic tasks.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Playground AI",
+                        url: "playgroundai.com",
+                        output: "Web UI",
+                        desc: "Multi-model platform with SDXL, Flux; generous free tier.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "SeaArt",
+                        url: "seaart.ai",
+                        output: "Web UI",
+                        desc: "Anime-focused with ControlNet support; community model sharing.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Tensor.art",
+                        url: "tensor.art",
+                        output: "Web UI",
+                        desc: "Hosts community LoRAs and checkpoints; cloud-based generation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Mage.space",
+                        url: "mage.space",
+                        output: "Web UI",
+                        desc: "Clean interface with SDXL and custom model support.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Bing Image Creator",
+                        url: "bing.com/images/create",
+                        output: "Web",
+                        desc: "Powered by DALL-E 3; free with Microsoft account.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Pixlr",
+                        url: "pixlr.com",
+                        output: "Web UI",
+                        desc: "Three quality modes (Fast/Pro/Ultra); negative prompts support.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Canva Magic Media",
+                        url: "canva.com",
+                        output: "Web UI",
+                        desc: "50 free images; integrates directly into design canvas.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Fotor",
+                        url: "fotor.com",
+                        output: "Web UI",
+                        desc: "Beginner-friendly with daily free credits via check-ins.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 4,
+                    },
+                    {
+                        name: "Freepik AI",
+                        url: "freepik.com",
+                        output: "Web UI",
+                        desc: "20 free images/day; commercial-safe licensed training data.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 4,
+                    },
+                    {
+                        name: "DeepAI",
+                        url: "deepai.org",
+                        output: "Web/API",
+                        desc: "Three quality tiers; full commercial rights; API integration.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 4,
+                    },
+                    {
+                        name: "Renderforest",
+                        url: "renderforest.com",
+                        output: "Web UI",
+                        desc: "All-in-one for images, logos, and videos from text.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 4,
+                    },
+                ],
+                "image-to-video": [
+                    {
+                        name: "Kling 1.5",
+                        url: "klingai.com",
+                        output: "MP4 / 120s",
+                        desc: "Industry-leading duration up to 5 min; image-to-video with complex motion.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Runway Gen-3 Alpha",
+                        url: "runwayml.com",
+                        output: "MP4 / 16s",
+                        desc: "Motion brush; precise camera control; frame-by-frame editing.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Luma Dream Machine",
+                        url: "lumalabs.ai",
+                        output: "MP4 / 5s",
+                        desc: "Keyframe control (start/end images); photorealistic results; fast generation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Veo 2",
+                        url: "deepmind.google",
+                        output: "1080p/4K",
+                        desc: "Image-to-video with cinematic understanding; native audio sync.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "OpenAI Sora",
+                        url: "openai.com",
+                        output: "1080p / 60s",
+                        desc: "Image-to-video with superior physics; character consistency from reference.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Pika 2.5",
+                        url: "pika.art",
+                        output: "MP4 / 4s",
+                        desc: "PikaTwists effects; physics-based image animation; lip-sync support.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Haiper 2.0",
+                        url: "haiper.ai",
+                        output: "MP4 / 2-4s",
+                        desc: "High-action transitions from images; blur/movement simulation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "LTX Studio",
+                        url: "lightricks.com",
+                        output: "MP4",
+                        desc: "Image-to-sequence; multi-shot generation from single image.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Leonardo Motion",
+                        url: "leonardo.ai",
+                        output: "MP4",
+                        desc: "Cinemagraph-style animation; motion brushes for looping visuals.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Vidu",
+                        url: "vidu.studio",
+                        output: "MP4",
+                        desc: "Multi-camera from single image; consistent character animation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Stable Video Diffusion",
+                        url: "stability.ai",
+                        output: "MP4 / Weights",
+                        desc: "Open-source image-to-video; camera pan/tilt; local deployment.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "CogVideoX",
+                        url: "zhipuai.cn",
+                        output: "MP4 / Weights",
+                        desc: "Open-source; low VRAM; image-to-video consistency.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "LTX 2.3",
+                        url: "lightricks.com",
+                        output: "MP4 / 4K",
+                        desc: "Open-source 22B model; audio-video synthesis in single pass.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Open-Sora",
+                        url: "github.com/hpcaitech/OpenSora",
+                        output: "Weights",
+                        desc: "Community Sora replica; image-to-video support; open-source.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Kaiber",
+                        url: "kaiber.ai",
+                        output: "MP4",
+                        desc: "Music-reactive image animation; style transfer; artist-focused tools.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Immersity AI",
+                        url: "immersity.ai",
+                        output: "MP4 / 3D",
+                        desc: "2D-to-3D conversion; depth-aware camera movement; legacy LeiaLOOBS.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                ],
+                "text-to-video": [
+                    {
+                        name: "OpenAI Sora",
+                        url: "openai.com",
+                        output: "1080p / 60s",
+                        desc: "Superior multi-character interaction and scene continuity; physics simulation.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Veo 2",
+                        url: "deepmind.google",
+                        output: "1080p/4K",
+                        desc: "Deep YouTube/Google integration; cinematic understanding; native audio generation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Kling 1.5",
+                        url: "klingai.com",
+                        output: "1080p / 60fps",
+                        desc: "Up to 5 min videos; complex human movement; prevents deformation in long clips.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Runway Gen-3 Alpha",
+                        url: "runwayml.com",
+                        output: "MP4 / 16s",
+                        desc: "Industry-leading cinematic quality; motion brush; precise camera control.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Luma Dream Machine",
+                        url: "lumalabs.ai",
+                        output: "MP4 / 5s",
+                        desc: "Photorealistic generation; excellent free tier; fast generation speed.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Pika 2.5",
+                        url: "pika.art",
+                        output: "MP4 / 4s",
+                        desc: "PikaTwists effects; physics-based animations; user-friendly interface.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Haiper 2.0",
+                        url: "haiper.ai",
+                        output: "MP4 / 2-4s",
+                        desc: "High-action clips optimized for commercial transitions; blur/movement simulation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "LTX Studio",
+                        url: "lightricks.com",
+                        output: "MP4",
+                        desc: "Long-form script handling; automatic scene breakdown; consistent characters.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Vidu",
+                        url: "vidu.studio",
+                        output: "MP4",
+                        desc: "Multi-camera feature for same scene from different angles; simultaneous shots.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Mochi 1",
+                        url: "genmo.ai",
+                        output: "Weights",
+                        desc: "Open-weights video model; asymmetric diffusion; high-fidelity physics.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "CogVideoX",
+                        url: "zhipuai.cn",
+                        output: "MP4 / Weights",
+                        desc: "Open-source; low VRAM; high text-to-video consistency; 3D VAE-based.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Open-Sora",
+                        url: "github.com/hpcaitech/OpenSora",
+                        output: "Weights",
+                        desc: "Community project replicating Sora; democratizing video generation.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Stable Video Diffusion",
+                        url: "stability.ai",
+                        output: "MP4 / Weights",
+                        desc: "Image-to-video animation; camera pan/tilt; open model weights.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Seedance 2.0",
+                        url: "seedance.io",
+                        output: "MP4 / 1080p",
+                        desc: "Affordable pricing from $9.99; HD quality; pay-as-you-go options.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "InVideo AI",
+                        url: "invideo.io",
+                        output: "MP4",
+                        desc: "Script-to-video with stock footage; voice cloning; template library.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                ],
+                "text-to-speech": [
+                    {
+                        name: "ElevenLabs",
+                        url: "elevenlabs.io",
+                        output: "MP3/WAV/API",
+                        desc: "Industry standard for emotion-aware voice cloning.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Fish Audio",
+                        url: "fish.audio",
+                        output: "Weights/API",
+                        desc: "Optimized for sub-second latency in conversational agents.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Kokoro-82M",
+                        url: "huggingface.co",
+                        output: "ONNX/Python",
+                        desc: "Extremely small footprint; runs locally on CPUs.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Google Cloud TTS",
+                        url: "cloud.google.com/text-to-speech",
+                        output: "API (WAV/MP3)",
+                        desc: "WaveNet voices; 50+ languages; 1M chars/month free.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Amazon Polly",
+                        url: "aws.amazon.com/polly",
+                        output: "API (Speech Marks)",
+                        desc: "Speech marks for animation sync; 5M chars free (first year).",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Azure TTS",
+                        url: "azure.microsoft.com",
+                        output: "API (Neural)",
+                        desc: "140+ languages; Custom Neural Voice; enterprise security.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Cartesia",
+                        url: "cartesia.ai",
+                        output: "API (Streaming)",
+                        desc: "Ultra-low latency (40-90ms); emotional expression support.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Speechmatics",
+                        url: "speechmatics.com",
+                        output: "API",
+                        desc: "Sub-150ms latency; unified STT+TTS; cost-effective.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Rime",
+                        url: "rime.ai",
+                        output: "API / On-prem",
+                        desc: "Conversational prosody; sub-100ms; trained on real dialogue.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Neuphonic",
+                        url: "neuphonic.com",
+                        output: "API / On-device",
+                        desc: "On-device deployment; instant voice cloning; no GPU required.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Hume",
+                        url: "hume.ai",
+                        output: "API (EVI)",
+                        desc: "Emotional intelligence; prompt-based emotional delivery.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "MiniMax",
+                        url: "minimax.io",
+                        output: "API",
+                        desc: "Long-text mode (200k chars); 99% voice similarity cloning.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "OpenAI TTS",
+                        url: "openai.com",
+                        output: "API",
+                        desc: "GPT-4 powered; style prompting; 6 preset voices.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "IBM Watson TTS",
+                        url: "ibm.com/watson/tts",
+                        output: "API / On-prem",
+                        desc: "Offline deployment; custom word dictionaries; enterprise.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                ],
+                "text-to-music": [
+                    {
+                        name: "Suno v4",
+                        url: "suno.com",
+                        output: "MP3/WAV",
+                        desc: "Generates full songs with lyrics and multi-layered vocals.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Udio 2",
+                        url: "udio.com",
+                        output: "MP3/WAV",
+                        desc: "Highest audio fidelity for complex musical genres.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Mubert",
+                        url: "mubert.com",
+                        output: "MP3 / WAV",
+                        desc: "Royalty-free instrumental tracks; image-to-music; 5s-25min length.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Beatoven",
+                        url: "beatoven.ai",
+                        output: "MP3 / WAV",
+                        desc: "Video-synced music; shapes intensity around video cuts.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "AIVA",
+                        url: "aiva.ai",
+                        output: "MIDI / WAV",
+                        desc: "Cinematic/orchestral scores; tempo and intensity control.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Soundraw",
+                        url: "soundraw.io",
+                        output: "WAV",
+                        desc: "Customizable AI music; adjust tempo, mood, and length.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Boomy",
+                        url: "boomy.com",
+                        output: "MP3",
+                        desc: "Quick song creation; distributes to streaming platforms.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                ],
+                "image-to-text": [
+                    {
+                        name: "Claude 3.5 Sonnet",
+                        url: "claude.ai",
+                        output: "JSON/Text",
+                        desc: "Best-in-class for extracting data from dense tables/charts.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "ChatGPT (GPT-4o)",
+                        url: "chat.openai.com",
+                        output: "Text / JSON",
+                        desc: "Native multimodal; upload images for analysis, OCR, charts, diagrams.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Gemini (Vision)",
+                        url: "gemini.google.com",
+                        output: "Multi-modal",
+                        desc: "Analyze images, charts, screenshots via chat; 2M token context for videos.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Microsoft Copilot (Vision)",
+                        url: "copilot.microsoft.com",
+                        output: "Text / JSON",
+                        desc: "GPT-4 Vision powered; analyze screenshots, diagrams, photos via chat.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Gemini 2.5 Pro",
+                        url: "aistudio.google.com",
+                        output: "Multi-modal",
+                        desc: "Supports 2M+ token context for processing long video files.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "GPT-4o",
+                        url: "openai.com",
+                        output: "Text / JSON",
+                        desc: "Native multimodal; strong OCR and diagram understanding.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Llama 3.2 Vision",
+                        url: "meta.ai",
+                        output: "Text",
+                        desc: "Open-weights vision model; runs locally with sufficient VRAM.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Surya OCR",
+                        url: "github.com/VikParuchuri/surya",
+                        output: "Text / Layout",
+                        desc: "Open-source OCR; 90+ languages; document layout analysis.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Tesseract 5",
+                        url: "github.com/tesseract-ocr/tesseract",
+                        output: "Text",
+                        desc: "Classic open-source OCR engine; 100+ languages.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Google Cloud Vision",
+                        url: "cloud.google.com/vision",
+                        output: "JSON API",
+                        desc: "OCR + object/face detection; 1k units/month free.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Azure Computer Vision",
+                        url: "azure.microsoft.com",
+                        output: "JSON API",
+                        desc: "Read API for OCR; handwritten text support; enterprise.",
+                        free: 0,
+                        credits: 1,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                ],
+                "script-to-narration": [
+                    {
+                        name: "HeyGen 3.0",
+                        url: "heygen.com",
+                        output: "MP4/Avatar",
+                        desc: "High-fidelity video avatars with automated lip-syncing.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Synthesia 2.0",
+                        url: "synthesia.io",
+                        output: "MP4",
+                        desc: "Enterprise focus; optimized for corporate training localization.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Colossyan",
+                        url: "colossyan.com",
+                        output: "MP4/Avatar",
+                        desc: "200+ AI presenters; 100+ languages; SCORM/xAPI export; quizzes.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "D-ID",
+                        url: "d-id.com",
+                        output: "MP4/Avatar",
+                        desc: "Photo-to-video talking heads; API integration; real-time.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Elai.io",
+                        url: "elai.io",
+                        output: "MP4/Avatar",
+                        desc: "Text-to-video with avatars; PPT to video conversion.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Hour One",
+                        url: "hourone.ai",
+                        output: "MP4/Avatar",
+                        desc: "Virtual presenters; template-based video creation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Fliki",
+                        url: "fliki.ai",
+                        output: "MP4",
+                        desc: "Blog/script to video with AI narration and stock visuals.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Pictory",
+                        url: "pictory.ai",
+                        output: "MP4",
+                        desc: "Script/blog to video; auto-captioning; stock library.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "InVideo AI",
+                        url: "invideo.io",
+                        output: "MP4",
+                        desc: "Template library with voice cloning; script-to-video with stock footage.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Lumen5",
+                        url: "lumen5.com",
+                        output: "MP4",
+                        desc: "Blog-to-video automation; drag-and-drop editing; news-style videos.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Veed.io",
+                        url: "veed.io",
+                        output: "MP4",
+                        desc: "AI avatars + video editor; auto-subtitles; screen recording integration.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "DeepBrain AI",
+                        url: "deepbrain.io",
+                        output: "MP4/Avatar",
+                        desc: "AI Studios with photorealistic avatars; multi-scene video creation.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Tavus",
+                        url: "tavus.io",
+                        output: "MP4/Avatar",
+                        desc: "Personalized video at scale; single recording generates thousands of variants.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Wondershare Virbo",
+                        url: "virbo.wondershare.com",
+                        output: "MP4/Avatar",
+                        desc: "150+ AI avatars; 300+ voices; multi-platform app support.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                ],
+                "web-chat": [
+                    {
+                        name: "ChatGPT",
+                        url: "openai.com",
+                        output: "Web Chat",
+                        desc: "Industry-leading conversational AI with advanced reasoning and multimodal capabilities.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Claude",
+                        url: "claude.ai",
+                        output: "Web Chat",
+                        desc: "Exceptional reasoning, coding, and writing capabilities with large context window.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Gemini",
+                        url: "gemini.google.com",
+                        output: "Web Chat",
+                        desc: "Deep Google ecosystem integration with multimodal understanding.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Qwen",
+                        url: "chat.qwen.ai",
+                        output: "Web Chat",
+                        desc: "Alibaba's advanced AI with strong coding, reasoning, and multilingual capabilities.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Microsoft Copilot",
+                        url: "copilot.microsoft.com",
+                        output: "Web Chat",
+                        desc: "GPT-4 powered with web search and Microsoft 365 integration.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Perplexity",
+                        url: "perplexity.ai",
+                        output: "Web Chat",
+                        desc: "AI-powered search engine with cited sources and real-time information.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Poe",
+                        url: "poe.com",
+                        output: "Web Chat",
+                        desc: "Multi-bot platform with access to Claude, GPT-4, and specialized models.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Character.ai",
+                        url: "character.ai",
+                        output: "Web Chat",
+                        desc: "Roleplay-focused chat with customizable AI personalities and characters.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "HuggingChat",
+                        url: "huggingface.co",
+                        output: "Web Chat",
+                        desc: "Open-source chat interface with access to various open models.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Grok",
+                        url: "x.ai",
+                        output: "Web Chat",
+                        desc: "Real-time information access with X/Twitter integration and witty personality.",
+                        free: 0,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "YouChat",
+                        url: "you.com",
+                        output: "Web Chat",
+                        desc: "AI search assistant with real-time web results and app integrations.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Phind",
+                        url: "phind.com",
+                        output: "Web Chat",
+                        desc: "Developer-focused AI search engine with code examples and technical answers.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Mistral Le Chat",
+                        url: "chat.mistral.ai",
+                        output: "Web Chat",
+                        desc: "European AI with efficient models and strong reasoning capabilities.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                ],
+                "image-to-prompt": [
+                    {
+                        name: "ChatGPT (GPT-4o)",
+                        url: "chat.openai.com",
+                        output: "Text Prompt",
+                        desc: "Analyze any image and generate detailed prompts for AI art generators.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Google Gemini (Vision)",
+                        url: "gemini.google.com",
+                        output: "Text Prompt",
+                        desc: "Extract detailed descriptions from images; reverse-engineer image styles.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Claude (Vision)",
+                        url: "claude.ai",
+                        output: "Text Prompt",
+                        desc: "Exceptional at analyzing visual content and generating structured prompts.",
+                        free: 0,
+                        credits: 1,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 1,
+                    },
+                    {
+                        name: "Microsoft Copilot (Vision)",
+                        url: "copilot.microsoft.com",
+                        output: "Text Prompt",
+                        desc: "GPT-4 Vision powered; analyze images and generate prompts for DALL-E 3.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 0,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "CLIP Interrogator",
+                        url: "huggingface.co/spaces/philschmid/clip-interrogator",
+                        output: "Text Prompt",
+                        desc: "Specialized tool for reverse-engineering prompts from images using CLIP.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                    {
+                        name: "Img2Prompt",
+                        url: "github.com/pharmapsychotic/clip-interrogator",
+                        output: "Text Prompt",
+                        desc: "Open-source CLIP-based image captioning for Stable Diffusion prompts.",
+                        free: 1,
+                        credits: 0,
+                        sub: 0,
+                        api: 0,
+                        local: 1,
+                        nsfw: 0,
+                        tier: 3,
+                    },
+                    {
+                        name: "Perplexity (Vision)",
+                        url: "perplexity.ai",
+                        output: "Text Prompt",
+                        desc: "Upload images for analysis; get detailed descriptions and context.",
+                        free: 1,
+                        credits: 0,
+                        sub: 1,
+                        api: 1,
+                        local: 0,
+                        nsfw: 0,
+                        tier: 2,
+                    },
+                ],
+            };
+
+            let currentCategory = "web-chat";
+            let sortDirection = 1;
+
+            function copyToClipboard(text, btn) {
+                const dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                const original = btn.innerHTML;
+                btn.innerHTML = "✓";
+                setTimeout(() => (btn.innerHTML = original), 1000);
+            }
+
+            function renderTable() {
+                const tbody = document.getElementById("table-body");
+                const items = data[currentCategory];
+
+                tbody.innerHTML = items
+                    .map(
+                        (item) => `
+            <tr>
+                <td class="col-tier"><span class="tier-badge tier-${item.tier || 3}">T${item.tier || 3}</span></td>
+                <td class="col-logo"><img class="service-logo" src="https://www.google.com/s2/favicons?domain=${item.url}&sz=64" alt="${item.name}" onerror="this.style.display='none'"></td>
+                <td class="col-name"><span class="service-name">${item.name}</span></td>
+                <td class="col-output"><span class="output-tag">${item.output}</span></td>
+                <td class="col-check"><span class="dot ${item.free ? "yes" : "no"}"></span></td>
+                <td class="col-check"><span class="dot ${item.credits ? "yes" : "no"}"></span></td>
+                <td class="col-check"><span class="dot ${item.sub ? "yes" : "no"}"></span></td>
+                <td class="col-check"><span class="dot ${item.api ? "yes" : "no"}"></span></td>
+                <td class="col-check"><span class="dot ${item.local ? "yes" : "no"}"></span></td>
+                <td class="col-nsfw"><span class="dot ${item.nsfw ? "yes" : "no"}"></span></td>
+                <td class="col-url">
+                    <div class="url-cell">
+                        <a href="https://${item.url}" class="url-link" target="_blank">${item.url}</a>
+                        <button class="copy-btn" onclick="copyToClipboard('${item.url}', this)">❐</button>
+                    </div>
+                </td>
+                <td class="col-desc description-cell">${item.desc}</td>
+            </tr>
+        `,
+                    )
+                    .join("");
+            }
+
+            function setTab(cat, btn) {
+                currentCategory = cat;
+                document
+                    .querySelectorAll(".tab-btn")
+                    .forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                document.getElementById("category-title").innerText =
+                    btn.innerText;
+                // Sort by tier when changing tabs
+                sortDirection = 1;
+                data[currentCategory].sort((a, b) => {
+                    let valA = a.tier || 3;
+                    let valB = b.tier || 3;
+                    return valA - valB;
+                });
+                renderTable();
+            }
+
+            function sortTable(colIndex) {
+                const keys = [
+                    "tier",
+                    "name",
+                    "output",
+                    "free",
+                    "credits",
+                    "sub",
+                    "api",
+                    "local",
+                    "nsfw",
+                    "url",
+                    "desc",
+                ];
+                const key = keys[colIndex - 1];
+
+                data[currentCategory].sort((a, b) => {
+                    let valA = a[key];
+                    let valB = b[key];
+                    if (typeof valA === "string")
+                        return valA.localeCompare(valB) * sortDirection;
+                    return (valA - valB) * sortDirection;
+                });
+
+                sortDirection *= -1;
+                const ths = document.querySelectorAll("th");
+                ths.forEach((th) =>
+                    th.classList.remove("sort-asc", "sort-desc"),
+                );
+                ths[colIndex].classList.add(
+                    sortDirection === 1 ? "sort-desc" : "sort-asc",
+                );
+                renderTable();
+            }
+
+            window.onload = () => {
+                data[currentCategory].sort((a, b) => {
+                    let valA = a.tier || 3;
+                    let valB = b.tier || 3;
+                    return valA - valB;
+                });
+                renderTable();
+            };
+        </script>
+    </body>
+</html>
