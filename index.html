@@ -209,11 +209,15 @@
                 text-overflow: ellipsis;
                 font-size: 12px;
             }
+            tr:hover td {
+                background: #f8fafc;
+            }
             .description-cell {
                 white-space: normal;
                 font-size: 11px;
                 line-height: 1.35;
                 color: var(--text-muted);
+                max-width: 280px;
             }
             .service-name {
                 font-weight: 700;
@@ -322,6 +326,296 @@
                 margin: 8px auto 0;
                 line-height: 1.4;
             }
+
+            /* Action Buttons */
+            .action-buttons {
+                display: flex;
+                gap: 8px;
+            }
+            .action-btn {
+                background: white;
+                border: 1px solid var(--border);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 600;
+                cursor: pointer;
+                color: var(--text);
+                transition: all 0.2s;
+            }
+            .action-btn:hover {
+                background: var(--surface);
+                border-color: var(--text-muted);
+            }
+
+            /* Editable Cells */
+            .editable {
+                cursor: pointer;
+                padding: 2px 4px;
+                border-radius: 2px;
+            }
+            .editable:hover {
+                background: #f1f5f9;
+            }
+            .editable-text:focus {
+                background: #fef3c7;
+                outline: 2px solid #d97706;
+            }
+            .tier-cell {
+                cursor: pointer;
+                width: 22px;
+                height: 22px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                font-size: 11px;
+                border-radius: 4px;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+            }
+            .tier-cell:hover {
+                transform: scale(1.05);
+            }
+            .tier-1 {
+                background: linear-gradient(135deg, #fbbf24, #d97706);
+                color: #78350f;
+            }
+            .tier-2 {
+                background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+                color: #1e293b;
+            }
+            .tier-3 {
+                background: linear-gradient(135deg, #d4a574, #b87333);
+                color: #78350f;
+            }
+            .tier-4 {
+                background: #e2e8f0;
+                color: #475569;
+            }
+            .binary-dot {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                display: inline-block;
+                cursor: pointer;
+                transition: transform 0.1s;
+                position: relative;
+            }
+            .binary-dot:hover {
+                transform: scale(1.15);
+            }
+            .binary-dot::after {
+                content: attr(data-hint);
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #1e293b;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 10px;
+                white-space: nowrap;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s;
+                z-index: 100;
+            }
+            .binary-dot:hover::after {
+                opacity: 1;
+            }
+            .binary-yes {
+                background: radial-gradient(
+                    circle at 30% 30%,
+                    #34d399,
+                    #10b981
+                );
+                box-shadow: 0 2px 4px rgba(16, 185, 129, 0.4);
+            }
+            .binary-yes::after {
+                content: "Yes";
+            }
+            .binary-no {
+                background: radial-gradient(
+                    circle at 30% 30%,
+                    #e2e8f0,
+                    #cbd5e1
+                );
+                box-shadow: 0 2px 4px rgba(148, 163, 184, 0.3);
+            }
+            .binary-no::after {
+                content: "No";
+            }
+            .delete-btn {
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                font-size: 18px;
+                opacity: 0.25;
+                transition: opacity 0.2s;
+                padding: 4px 8px;
+            }
+            .delete-btn:hover {
+                opacity: 1;
+            }
+            .tier-dropdown {
+                position: absolute;
+                background: white;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                padding: 4px;
+                min-width: 70px;
+            }
+            .tier-dropdown button {
+                display: block;
+                width: 100%;
+                padding: 6px 10px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                text-align: center;
+                font-size: 11px;
+                font-weight: 700;
+                border-radius: 4px;
+            }
+            .tier-dropdown button:hover {
+                background: #f1f5f9;
+            }
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            }
+            .modal {
+                background: white;
+                border-radius: 12px;
+                padding: 24px;
+                max-width: 420px;
+                width: 90%;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            }
+            .modal h3 {
+                margin: 0 0 16px;
+                font-size: 16px;
+                font-weight: 700;
+            }
+            .modal input {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                font-size: 13px;
+                margin-bottom: 16px;
+                box-sizing: border-box;
+            }
+            .modal input:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px var(--primary-light);
+            }
+            .modal-buttons {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-end;
+            }
+            .modal-btn {
+                padding: 8px 16px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                border: none;
+            }
+            .modal-btn-primary {
+                background: var(--primary);
+                color: white;
+            }
+            .modal-btn-primary:hover {
+                background: #1d4ed8;
+            }
+            .modal-btn-secondary {
+                background: var(--surface);
+                color: var(--text);
+                border: 1px solid var(--border);
+            }
+            .modal-btn-secondary:hover {
+                background: #e2e8f0;
+            }
+            .modal-btn-danger {
+                background: #ef4444;
+                color: white;
+            }
+            .modal-btn-danger:hover {
+                background: #dc2626;
+            }
+            .logo-preview {
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
+                background: var(--surface);
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .logo-preview img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+            .logo-cell {
+                cursor: pointer;
+                position: relative;
+            }
+            .logo-cell:hover .logo-overlay {
+                opacity: 1;
+            }
+            .logo-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 18px;
+                opacity: 0;
+                transition: opacity 0.2s;
+                border-radius: 6px;
+            }
+            .add-row-container {
+                padding: 12px;
+                background: var(--surface);
+                border-top: 1px solid var(--border);
+                text-align: center;
+            }
+            .add-row-btn {
+                background: var(--success);
+                color: white;
+                border: none;
+                padding: 8px 20px;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .add-row-btn:hover {
+                background: #059669;
+            }
         </style>
     </head>
     <body>
@@ -375,13 +669,40 @@
         <main>
             <div class="controls">
                 <h2 id="category-title" class="visually-hidden">Web Chat</h2>
+                <div class="action-buttons">
+                    <button
+                        class="action-btn"
+                        onclick="exportData()"
+                        id="export-btn"
+                    >
+                        📥 Export All
+                    </button>
+                    <button
+                        class="action-btn"
+                        onclick="document.getElementById('import-file').click()"
+                        id="import-btn"
+                    >
+                        📤 Import
+                    </button>
+                    <input
+                        type="file"
+                        id="import-file"
+                        accept=".json"
+                        style="display: none"
+                        onchange="importData(event)"
+                    />
+                </div>
             </div>
 
             <div class="table-wrapper">
                 <table id="service-table">
                     <thead>
                         <tr>
-                            <th class="col-tier" onclick="sortTable(1)">
+                            <th
+                                class="col-tier"
+                                onclick="sortTable(1)"
+                                title="Service tier ranking (1=Best, click to change)"
+                            >
                                 Tier
                             </th>
                             <th class="col-logo">Logo</th>
@@ -391,22 +712,46 @@
                             <th class="col-output" onclick="sortTable(3)">
                                 Output Type
                             </th>
-                            <th class="col-check" onclick="sortTable(4)">
+                            <th
+                                class="col-check"
+                                onclick="sortTable(4)"
+                                title="Completely free to use"
+                            >
                                 Free
                             </th>
-                            <th class="col-check" onclick="sortTable(5)">
+                            <th
+                                class="col-check"
+                                onclick="sortTable(5)"
+                                title="Offers free credits"
+                            >
                                 Credits
                             </th>
-                            <th class="col-check" onclick="sortTable(6)">
+                            <th
+                                class="col-check"
+                                onclick="sortTable(6)"
+                                title="Paid subscription available"
+                            >
                                 Sub
                             </th>
-                            <th class="col-check" onclick="sortTable(7)">
+                            <th
+                                class="col-check"
+                                onclick="sortTable(7)"
+                                title="API access available"
+                            >
                                 API
                             </th>
-                            <th class="col-check" onclick="sortTable(8)">
+                            <th
+                                class="col-check"
+                                onclick="sortTable(8)"
+                                title="Can run locally/on Colab"
+                            >
                                 Local
                             </th>
-                            <th class="col-nsfw" onclick="sortTable(9)">
+                            <th
+                                class="col-nsfw"
+                                onclick="sortTable(9)"
+                                title="Allows adult content"
+                            >
                                 NSFW
                             </th>
                             <th class="col-url" onclick="sortTable(10)">
@@ -415,18 +760,56 @@
                             <th class="col-desc" onclick="sortTable(11)">
                                 Key Constraint / Benefit
                             </th>
+                            <th class="col-check"></th>
                         </tr>
                     </thead>
                     <tbody id="table-body"></tbody>
                 </table>
+                <div class="add-row-container">
+                    <button class="add-row-btn" onclick="addNewRow()">
+                        + Add New Service
+                    </button>
+                </div>
             </div>
 
             <div class="legend">
                 <div class="legend-item">
-                    <span class="dot yes"></span> Supported
+                    <span
+                        class="binary-dot binary-yes"
+                        style="cursor: default"
+                    ></span>
+                    <span>Enabled</span>
                 </div>
                 <div class="legend-item">
-                    <span class="dot no"></span> Not Supported
+                    <span
+                        class="binary-dot binary-no"
+                        style="cursor: default"
+                    ></span>
+                    <span>Disabled</span>
+                </div>
+                <div class="legend-item" style="margin-left: 16px">
+                    <span
+                        class="tier-cell tier-1"
+                        style="width: 20px; height: 20px; font-size: 10px"
+                        >1</span
+                    >
+                    <span>Gold</span>
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="tier-cell tier-2"
+                        style="width: 20px; height: 20px; font-size: 10px"
+                        >2</span
+                    >
+                    <span>Silver</span>
+                </div>
+                <div class="legend-item">
+                    <span
+                        class="tier-cell tier-3"
+                        style="width: 20px; height: 20px; font-size: 10px"
+                        >3</span
+                    >
+                    <span>Bronze</span>
                 </div>
             </div>
 
@@ -440,10 +823,50 @@
                     the respective service providers before making decisions.
                 </p>
             </footer>
+
+            <!-- Logo Edit Modal -->
+            <div
+                id="logo-modal"
+                class="modal-overlay"
+                style="display: none"
+                onclick="if (event.target === this) closeLogoModal();"
+            >
+                <div class="modal">
+                    <h3>Change Service Logo</h3>
+                    <div class="logo-preview">
+                        <img id="logo-preview-img" src="" alt="Logo preview" />
+                    </div>
+                    <input
+                        type="text"
+                        id="logo-url-input"
+                        placeholder="Enter logo image URL (e.g., https://example.com/logo.png)"
+                    />
+                    <div class="modal-buttons">
+                        <button
+                            class="modal-btn modal-btn-danger"
+                            onclick="clearLogo()"
+                        >
+                            Remove Logo
+                        </button>
+                        <button
+                            class="modal-btn modal-btn-secondary"
+                            onclick="closeLogoModal()"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            class="modal-btn modal-btn-primary"
+                            onclick="saveLogo()"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <script>
-            // Column legend : free=unlimited free | credits=free daily/weekly/monthly | sub=paid subscription | api=API access | local=run on home PC/Colab | nsfw=allows adult content | tier=1(best)-4
+            // Column legend: free=unlimited free | credits=free daily/weekly/monthly | sub=paid subscription | api=API access | local=run on home PC/Colab | nsfw=allows adult content | tier=1(best)-4
             const data = {
                 "text-to-image": [
                     {
@@ -2028,6 +2451,178 @@
             let currentCategory = "web-chat";
             let sortDirection = 1;
 
+            function exportData() {
+                const dataStr = JSON.stringify(data, null, 2);
+                const blob = new Blob([dataStr], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "ai-services-data.json";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            function importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        // Validate basic structure
+                        if (typeof importedData !== "object") {
+                            alert(
+                                "Invalid data format. Expected a JSON object.",
+                            );
+                            return;
+                        }
+                        // Merge or replace data
+                        if (
+                            confirm(
+                                "This will replace the entire data table. Continue?",
+                            )
+                        ) {
+                            for (const category in importedData) {
+                                data[category] = importedData[category];
+                            }
+                            renderTable();
+                            alert("Data imported successfully!");
+                        }
+                    } catch (err) {
+                        alert("Error parsing JSON file: " + err.message);
+                    }
+                };
+                reader.readAsText(file);
+                event.target.value = ""; // Reset file input
+            }
+
+            function addNewRow() {
+                const newItem = {
+                    name: "New Service",
+                    url: "example.com",
+                    output: "Web",
+                    desc: "Enter description...",
+                    free: 0,
+                    credits: 0,
+                    sub: 1,
+                    api: 0,
+                    local: 0,
+                    nsfw: 0,
+                    tier: 3,
+                };
+                data[currentCategory].push(newItem);
+                renderTable();
+                // Scroll to bottom
+                setTimeout(() => {
+                    const tbody = document.getElementById("table-body");
+                    tbody.scrollTop = tbody.scrollHeight;
+                }, 100);
+            }
+
+            function deleteRow(index) {
+                if (confirm("Delete this service?")) {
+                    data[currentCategory].splice(index, 1);
+                    renderTable();
+                }
+            }
+
+            function makeEditable(value, index, field) {
+                if (field === "tier") {
+                    const tierClass = `tier-${value || 3}`;
+                    const tierNum = value || 3;
+                    return `<div class="tier-cell ${tierClass}" onclick="showTierDropdown(event, ${index}, ${tierNum})">${tierNum}</div>`;
+                }
+                if (
+                    ["free", "credits", "sub", "api", "local", "nsfw"].includes(
+                        field,
+                    )
+                ) {
+                    const dotClass = value ? "binary-yes" : "binary-no";
+                    return `<span class="binary-dot ${dotClass}" onclick="toggleBinary(${index}, '${field}')"></span>`;
+                }
+                return `<span class="editable editable-text"
+                        contenteditable="true"
+                        onblur="updateField(${index}, '${field}', this.innerText)"
+                        onkeydown="if(event.key==='Enter'){this.blur();event.preventDefault()}">${value}</span>`;
+            }
+
+            function toggleBinary(index, field) {
+                data[currentCategory][index][field] = data[currentCategory][
+                    index
+                ][field]
+                    ? 0
+                    : 1;
+                renderTable();
+            }
+
+            let activeTierDropdown = null;
+
+            function showTierDropdown(event, index, currentValue) {
+                event.stopPropagation();
+
+                if (activeTierDropdown) {
+                    activeTierDropdown.remove();
+                }
+
+                const dropdown = document.createElement("div");
+                dropdown.className = "tier-dropdown";
+
+                const tiers = [
+                    { val: 1, class: "tier-1" },
+                    { val: 2, class: "tier-2" },
+                    { val: 3, class: "tier-3" },
+                    { val: 4, class: "tier-4" },
+                ];
+
+                tiers.forEach((tier) => {
+                    const btn = document.createElement("button");
+                    btn.innerHTML = `<div class="tier-cell ${tier.class}" style="width:100%;margin:0">${tier.val}</div>`;
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        updateField(index, "tier", tier.val);
+                        dropdown.remove();
+                        activeTierDropdown = null;
+                    };
+                    dropdown.appendChild(btn);
+                });
+
+                event.target.appendChild(dropdown);
+                activeTierDropdown = dropdown;
+
+                setTimeout(() => {
+                    document.addEventListener(
+                        "click",
+                        function closeDropdown() {
+                            if (dropdown && dropdown.parentNode) {
+                                dropdown.remove();
+                            }
+                            activeTierDropdown = null;
+                            document.removeEventListener(
+                                "click",
+                                closeDropdown,
+                            );
+                        },
+                    );
+                }, 100);
+            }
+
+            function updateField(index, field, value) {
+                if (
+                    field === "tier" ||
+                    ["free", "credits", "sub", "api", "local", "nsfw"].includes(
+                        field,
+                    )
+                ) {
+                    data[currentCategory][index][field] = parseInt(value);
+                } else {
+                    data[currentCategory][index][field] = value.trim();
+                }
+                renderTable();
+            }
+
             function copyToClipboard(text, btn) {
                 const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
@@ -2045,30 +2640,85 @@
                 const items = data[currentCategory];
 
                 tbody.innerHTML = items
-                    .map(
-                        (item) => `
-            <tr>
-                <td class="col-tier"><span class="tier-badge tier-${item.tier || 3}">T${item.tier || 3}</span></td>
-                <td class="col-logo"><img class="service-logo" src="https://www.google.com/s2/favicons?domain=${item.url}&sz=64" alt="${item.name}" onerror="this.style.display='none'"></td>
-                <td class="col-name"><span class="service-name">${item.name}</span></td>
-                <td class="col-output"><span class="output-tag">${item.output}</span></td>
-                <td class="col-check"><span class="dot ${item.free ? "yes" : "no"}"></span></td>
-                <td class="col-check"><span class="dot ${item.credits ? "yes" : "no"}"></span></td>
-                <td class="col-check"><span class="dot ${item.sub ? "yes" : "no"}"></span></td>
-                <td class="col-check"><span class="dot ${item.api ? "yes" : "no"}"></span></td>
-                <td class="col-check"><span class="dot ${item.local ? "yes" : "no"}"></span></td>
-                <td class="col-nsfw"><span class="dot ${item.nsfw ? "yes" : "no"}"></span></td>
-                <td class="col-url">
-                    <div class="url-cell">
-                        <a href="https://${item.url}" class="url-link" target="_blank">${item.url}</a>
-                        <button class="copy-btn" onclick="copyToClipboard('${item.url}', this)">❐</button>
-                    </div>
-                </td>
-                <td class="col-desc description-cell">${item.desc}</td>
-            </tr>
-        `,
-                    )
+                    .map((item, index) => {
+                        const logoSrc =
+                            item.logo ||
+                            `https://www.google.com/s2/favicons?domain=${item.url}&sz=64`;
+                        return `
+                <tr>
+                    <td class="col-tier">${makeEditable(item.tier || 3, index, "tier")}</td>
+                    <td class="col-logo logo-cell" onclick="openLogoModal(${index})">
+                        <img class="service-logo" src="${logoSrc}" alt="${item.name}" onerror="this.style.display='none'">
+                        <div class="logo-overlay">✏️</div>
+                    </td>
+                    <td class="col-name">${makeEditable(item.name, index, "name")}</td>
+                    <td class="col-output">${makeEditable(item.output, index, "output")}</td>
+                    <td class="col-check">${makeEditable(item.free, index, "free")}</td>
+                    <td class="col-check">${makeEditable(item.credits, index, "credits")}</td>
+                    <td class="col-check">${makeEditable(item.sub, index, "sub")}</td>
+                    <td class="col-check">${makeEditable(item.api, index, "api")}</td>
+                    <td class="col-check">${makeEditable(item.local, index, "local")}</td>
+                    <td class="col-nsfw">${makeEditable(item.nsfw, index, "nsfw")}</td>
+                    <td class="col-url">
+                        <div class="url-cell">
+                            <a href="https://${item.url}" class="url-link" target="_blank">${makeEditable(item.url, index, "url")}</a>
+                            <button class="copy-btn" onclick="copyToClipboard('${item.url}', this)">❐</button>
+                        </div>
+                    </td>
+                    <td class="col-desc description-cell">${makeEditable(item.desc, index, "desc")}</td>
+                    <td class="col-check"><button class="delete-btn" onclick="deleteRow(${index})" title="Delete service">×</button></td>
+                </tr>
+            `;
+                    })
                     .join("");
+            }
+
+            let currentLogoIndex = null;
+
+            function openLogoModal(index) {
+                currentLogoIndex = index;
+                const item = data[currentCategory][index];
+                const modal = document.getElementById("logo-modal");
+                const input = document.getElementById("logo-url-input");
+                const preview = document.getElementById("logo-preview-img");
+
+                const logoUrl = item.logo || "";
+                input.value = logoUrl;
+                preview.src =
+                    logoUrl ||
+                    `https://www.google.com/s2/favicons?domain=${item.url}&sz=64`;
+                preview.style.display = "block";
+
+                modal.style.display = "flex";
+            }
+
+            function closeLogoModal() {
+                document.getElementById("logo-modal").style.display = "none";
+                currentLogoIndex = null;
+            }
+
+            function saveLogo() {
+                if (currentLogoIndex === null) return;
+
+                const input = document.getElementById("logo-url-input");
+                const logoUrl = input.value.trim();
+
+                if (logoUrl) {
+                    data[currentCategory][currentLogoIndex].logo = logoUrl;
+                } else {
+                    delete data[currentCategory][currentLogoIndex].logo;
+                }
+
+                renderTable();
+                closeLogoModal();
+            }
+
+            function clearLogo() {
+                if (currentLogoIndex === null) return;
+
+                delete data[currentCategory][currentLogoIndex].logo;
+                renderTable();
+                closeLogoModal();
             }
 
             function setTab(cat, btn) {
